@@ -57,10 +57,11 @@ const Login = () => {
         <LoginLayout>
             <Container sx={{ p: "70px 10px" }} maxWidth="xs">
                 <Card>
-                    <CardHeader title="新規登録" />
+                    <CardHeader title="ログイン" />
                     <CardContent>
                         <Box sx={{ mb: "15px" }}>
                             <TextField
+                                data-cy="email"
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!emailError}
                                 helperText={emailError}
@@ -71,6 +72,7 @@ const Login = () => {
                         </Box>
                         <Box sx={{ mb: "15px" }}>
                             <TextField
+                                data-cy="password"
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!passwordError}
                                 helperText={passwordError}
@@ -88,12 +90,13 @@ const Login = () => {
                             新規登録画面へ
                         </Button>
                         <LoadingButton
+                            data-cy="submit"
                             color="primary"
                             variant="contained"
                             onClick={() => { submit() }}
                             loading={loginUserLoading}
                         >
-                            登録<SendIcon />
+                            ログイン<SendIcon />
                         </LoadingButton>
                     </CardActions>
                 </Card>

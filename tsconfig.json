@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "cypress/e2e/index.cy.jsx"  ]
 }
