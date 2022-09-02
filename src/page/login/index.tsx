@@ -62,6 +62,7 @@ const Login = () => {
                         <Box sx={{ mb: "15px" }}>
                             <TextField
                                 data-cy="email"
+                                data-testid="email"
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!emailError}
                                 helperText={emailError}
@@ -73,6 +74,7 @@ const Login = () => {
                         <Box sx={{ mb: "15px" }}>
                             <TextField
                                 data-cy="password"
+                                data-testid="password"
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!passwordError}
                                 helperText={passwordError}
@@ -91,6 +93,7 @@ const Login = () => {
                         </Button>
                         <LoadingButton
                             data-cy="submit"
+                            data-testid="submit"
                             color="primary"
                             variant="contained"
                             onClick={() => { submit() }}
