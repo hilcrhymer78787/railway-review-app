@@ -1,53 +1,53 @@
 import React from "react";
-import SendIcon from "@mui/icons-material/Send";
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import {
     Box,
     Card,
     CardHeader,
     CardContent,
-    CardActions,
-    TextField,
-    Container,
-    Button,
+    ListItem,
+    ListItemAvatar,
+    Avatar,
+    ListItemText,
+    List,
+    Pagination,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import { useNavigate } from 'react-router-dom';
-import { useUserApi } from "../../data/user";
 import Layout from "../../layouts/default"
+import { useBooks } from "../../data/books";
 const Books = () => {
     const navigate = useNavigate();
-    const { loginUser, loginUserLoading } = useUserApi();
-    const [email, setEmail] = React.useState<string>("");
-    const [emailError, setEmailError] = React.useState<string>("");
-    const [password, setPassword] = React.useState<string>("");
-    const [passwordError, setPasswordError] = React.useState<string>("");
-    const submit = () => {
-        if (validation()) return;
-        loginUser({
-            email: email,
-            password: password,
-        });
-    };
-    const validation = (): boolean => {
-        let isError = false;
-        setEmailError("");
-        setPasswordError("");
-        if (!(/.+@.+\..+/.test(email))) {
-            setEmailError("正しい形式で入力してください");
-            isError = true;
-        }
-        if (password.length < 8) {
-            setPasswordError("パスワードは8桁以上で設定してください");
-            isError = true;
-        }
-        return isError;
-    };
+    const { books, fetchBooks } = useBooks();
+    const [page, setPage] = React.useState<number>(1);
+    const onClickPagination = (e: React.ChangeEvent<unknown>, page: number) => {
+        window.scroll({top: 0, behavior: 'smooth'});
+        setPage(page)
+        fetchBooks((page - 1) * 10)
+    }
     return (
         <Layout>
             <Card>
                 <CardHeader title="メイン画面" />
-                <CardContent>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</CardContent>
+                <CardContent sx={{ p: 0 }}>
+                    <List sx={{ width: '100%', p: 0 }}>
+                        {books.map((book) => (
+                            <ListItem key={book.id} sx={{ cursor: 'pointer' }} onClick={() => {
+                                navigate(`/book/${book.id}`)
+                            }}>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <ContentPasteIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={book.title} secondary={`id:${book.id}`} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </CardContent>
             </Card>
+            <Box sx={{ display: 'flex', justifyContent: 'center', pt: 3 }}>
+                <Pagination page={page} onChange={onClickPagination} color='primary' sx={{ mb: '20px' }} count={10} variant="outlined" shape="rounded" />
+            </Box>
         </Layout>
     );
 }
