@@ -5,6 +5,8 @@ import { apiUserCreateResponseType } from "../types/api/user/create/response";
 import { apiUserCreateRequestType } from "../types/api/user/create/request";
 import { apiUserLoginResponseType } from "../types/api/user/login/response";
 import { apiUserLoginRequestType } from "../types/api/user/login/request";
+import { apiUserEditRequestType } from "../types/api/user/edit/request";
+import { apiUserEditResponseType } from "../types/api/user/edit/response";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { atom } from "recoil";
 export const loginInfoAtom = atom<apiUserGetResponseType | null>({
@@ -15,6 +17,8 @@ export const loginInfoAtom = atom<apiUserGetResponseType | null>({
 export const useUserApi = (): {
   getUser: () => Promise<AxiosResponse<apiUserGetResponseType>>;
   getUserLoading: boolean;
+  editUser: (params: apiUserEditRequestType) => Promise<AxiosResponse<apiUserEditResponseType>>;
+  editUserLoading: boolean;
   createUser: (params: apiUserCreateRequestType) => Promise<AxiosResponse<apiUserCreateResponseType>>;
   createUserLoading: boolean;
   loginUser: (params: apiUserLoginRequestType) => Promise<AxiosResponse<apiUserLoginResponseType>>;
@@ -72,9 +76,27 @@ export const useUserApi = (): {
       });
   };
 
+  // editUser
+
+  const [editUserLoading, setEditUserLoading] = useState<boolean>(false);
+  const editUser = async (params: apiUserEditRequestType): Promise<AxiosResponse<apiUserEditResponseType>> => {
+    const requestConfig: AxiosRequestConfig = {
+      url: "/users",
+      method: "PUT",
+      data: params
+    };
+    setEditUserLoading(true);
+    return api(requestConfig)
+      .finally(() => {
+        setEditUserLoading(false);
+      });
+  };
+
   return {
     getUser,
     getUserLoading,
+    editUser,
+    editUserLoading,
     createUser,
     createUserLoading,
     loginUser,

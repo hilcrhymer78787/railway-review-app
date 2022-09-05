@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/common/Header";
+import FooterNavigation from '../components/common/FooterNavigation'
 import Container from "@mui/material/Container";
 import { useUserApi, loginInfoAtom } from "../data/user";
 import { useRecoilState } from "recoil";
@@ -40,6 +41,7 @@ const Layout = ({ children }: Props) => {
       <Container sx={{ p: "70px 10px" }} maxWidth="xs">
         {children}
       </Container>
+      <FooterNavigation />
     </>
   );
 }
