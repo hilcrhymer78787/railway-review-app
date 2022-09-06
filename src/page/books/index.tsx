@@ -27,7 +27,7 @@ const Books = () => {
     return (
         <Layout>
             <Card>
-                <CardHeader title="メイン画面" />
+                <CardHeader title="レビュー一覧" />
                 <CardContent sx={{ p: 0 }}>
                     <List sx={{ width: '100%', p: 0 }}>
                         {books.map((book) => (
