@@ -1,10 +1,7 @@
 import { api } from "../../plugins/axios";
 import { AxiosRequestConfig } from "axios";
+import { useParams } from "react-router-dom";
 import React from "react";
-export type apiBookGetReq = {
-  offset: number
-}
-export type apiBookGetRes = Book[]
 export type Book = {
   id: string,
   title: string,
@@ -14,26 +11,23 @@ export type Book = {
   reviewer: string,
   isMine: true
 }
-const getBooks = async (offset: number) => {
-  const apiParam: apiBookGetReq = {
-    offset: offset,
-  };
+const getBook = async (bookId: string) => {
   const requestConfig: AxiosRequestConfig = {
-    url: "/books",
+    url: `/books/${bookId}`,
     method: "GET",
-    params: apiParam,
   };
   return api(requestConfig)
 };
-export const useReadBooks = () => {
-  const [books, setBooks] = React.useState<apiBookGetRes>([]);
+export const useReadBook = () => {
+  const params = useParams();
+  const [book, setBook] = React.useState<Book | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorText, setErrorText] = React.useState('');
-  const fetchBooks = async (offset: number) => {
+  const fetchBook = async () => {
     setIsLoading(true);
     try {
-      const res = await getBooks(offset);
-      setBooks(res.data);
+      const res = await getBook(params.book_id ?? '');
+      setBook(res.data);
       setErrorText('');
     } catch (e) {
       if (e instanceof Error) {
@@ -48,12 +42,12 @@ export const useReadBooks = () => {
     }
   };
   React.useEffect(() => {
-    fetchBooks(0);
+    fetchBook();
   }, []);
   return {
-    books,
+    book,
     isLoading,
     errorText,
-    fetchBooks,
+    fetchBook,
   };
 };

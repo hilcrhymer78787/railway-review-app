@@ -9,6 +9,7 @@ import Signup from "./page/login/Signup"
 import Books from "./page/books"
 import User from "./page/user"
 import New from "./page/books/New"
+import Detail from "./page/books/Detail"
 import './App.css';
 import React from "react";
 import { useUserApi, loginInfoAtom } from "../src/data/user";
@@ -53,6 +54,7 @@ function App() {
               <Route path="/login" element={<Login />}></Route>
               <Route path="/login/signup" element={<Signup />}></Route>
               <Route path="/books" element={<Books />}></Route>
+              <Route path='/books/:book_id' element={<Detail />}></Route>
               <Route path="/user" element={<User />}></Route>
               <Route path="/new" element={<New />}></Route>
             </Routes>

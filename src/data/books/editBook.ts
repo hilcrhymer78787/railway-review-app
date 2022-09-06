@@ -1,34 +1,36 @@
 import { api } from "../../plugins/axios";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import React from "react";
-export type apiBookPostReq = {
+import { useParams } from "react-router-dom";
+export type apiBookPutReq = {
   title: string,
   url: string,
   detail: string,
   review: string
 }
-export type apiBookPostRes = Book[]
+export type apiBookPutRes = Book[]
 export type Book = {
   title: string,
   url: string,
   detail: string,
   review: string
 }
-const getBooks = async (apiParam: apiBookPostReq) => {
+const getBook = async (apiParam: apiBookPutReq, bookId: string) => {
   const requestConfig: AxiosRequestConfig = {
-    url: "/books",
-    method: "POST",
+    url: `/books/${bookId}`,
+    method: "PUT",
     data: apiParam,
   };
   return api(requestConfig)
 };
-export const useCreateBooks = () => {
-  const [createBooksLoading, setCreateBooksLoading] = React.useState(false);
+export const useEditBook = () => {
+  const params = useParams();
+  const [editBookLoading, setEditBookLoading] = React.useState(false);
   const [errorText, setErrorText] = React.useState('');
-  const createBooks = async (apiParam: apiBookPostReq) => {
-    setCreateBooksLoading(true);
+  const editBook = async (apiParam: apiBookPutReq) => {
+    setEditBookLoading(true);
     try {
-      const res = await getBooks(apiParam);
+      const res = await getBook(apiParam, params.book_id ?? '');
       setErrorText('');
     } catch (e) {
       if (e instanceof Error) {
@@ -39,12 +41,12 @@ export const useCreateBooks = () => {
         throw new Error('予期せぬエラー')
       }
     } finally {
-      setCreateBooksLoading(false);
+      setEditBookLoading(false);
     }
   };
   return {
-    createBooksLoading,
+    editBookLoading,
     errorText,
-    createBooks,
+    editBook,
   };
 };

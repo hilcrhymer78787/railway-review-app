@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Layout from "../../layouts/default"
-import { useReadBooks } from "../../data/readBooks";
+import { useReadBooks } from "../../data/books/readBooks";
 const Books = () => {
     const navigate = useNavigate();
     const { books, fetchBooks } = useReadBooks();
@@ -32,7 +32,7 @@ const Books = () => {
                     <List sx={{ width: '100%', p: 0 }}>
                         {books.map((book) => (
                             <ListItem key={book.id} sx={{ cursor: 'pointer' }} onClick={() => {
-                                navigate(`/book/${book.id}`)
+                                navigate(`/books/${book.id}`)
                             }}>
                                 <ListItemAvatar>
                                     <Avatar>
