@@ -1,39 +1,34 @@
 import { api } from "../plugins/axios";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import React from "react";
-export type apiBookGetReq = {
-  offset: number
-}
-export type apiBookGetRes = Book[]
-export type Book = {
-  id: string,
+export type apiBookPostReq = {
   title: string,
   url: string,
   detail: string,
-  review: string,
-  reviewer: string,
-  isMine: true
+  review: string
 }
-const getBooks = async (offset: number) => {
-  const apiParam: apiBookGetReq = {
-    offset: offset,
-  };
+export type apiBookPostRes = Book[]
+export type Book = {
+  title: string,
+  url: string,
+  detail: string,
+  review: string
+}
+const getBooks = async (apiParam: apiBookPostReq) => {
   const requestConfig: AxiosRequestConfig = {
     url: "/books",
-    method: "GET",
-    params: apiParam,
+    method: "POST",
+    data: apiParam,
   };
   return api(requestConfig)
 };
-export const useBooks = () => {
-  const [books, setBooks] = React.useState<apiBookGetRes>([]);
+export const useCreateBooks = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorText, setErrorText] = React.useState('');
-  const fetchBooks = async (offset: number) => {
+  const createBooks = async (apiParam: apiBookPostReq) => {
     setIsLoading(true);
     try {
-      const res = await getBooks(offset);
-      setBooks(res.data);
+      const res = await getBooks(apiParam);
       setErrorText('');
     } catch (e) {
       if (e instanceof Error) {
@@ -45,13 +40,9 @@ export const useBooks = () => {
       setIsLoading(false);
     }
   };
-  React.useEffect(() => {
-    fetchBooks(0);
-  }, []);
   return {
-    books,
     isLoading,
     errorText,
-    fetchBooks,
+    createBooks,
   };
 };

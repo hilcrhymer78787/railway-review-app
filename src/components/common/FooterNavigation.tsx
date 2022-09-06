@@ -23,6 +23,10 @@ export const FooterNavigation = () => {
           value="/books"
           icon={<FormatListBulletedIcon />} />
         <BottomNavigationAction
+          label="新規"
+          value="/new"
+          icon={<PlaylistAddIcon />} />
+        <BottomNavigationAction
           label="ユーザー"
           value="/user"
           icon={<PersonIcon />} />

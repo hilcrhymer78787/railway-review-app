@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Layout from "../../layouts/default"
-import { useBooks } from "../../data/books";
+import { useReadBooks } from "../../data/readBooks";
 const Books = () => {
     const navigate = useNavigate();
-    const { books, fetchBooks } = useBooks();
+    const { books, fetchBooks } = useReadBooks();
     const [page, setPage] = React.useState<number>(1);
     const onClickPagination = (e: React.ChangeEvent<unknown>, page: number) => {
         window.scroll({top: 0, behavior: 'smooth'});

@@ -8,11 +8,11 @@ import Login from "../src/page/login"
 import Signup from "./page/login/Signup"
 import Books from "./page/books"
 import User from "./page/user"
+import New from "./page/books/New"
 import './App.css';
 import React from "react";
 import { useUserApi, loginInfoAtom } from "../src/data/user";
 import { useSetRecoilState } from "recoil";
-import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 type AppInitProps = {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean | null>>
@@ -54,6 +54,7 @@ function App() {
               <Route path="/login/signup" element={<Signup />}></Route>
               <Route path="/books" element={<Books />}></Route>
               <Route path="/user" element={<User />}></Route>
+              <Route path="/new" element={<New />}></Route>
             </Routes>
           </BrowserRouter>
         }
