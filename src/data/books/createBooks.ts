@@ -1,4 +1,4 @@
-import { api } from "../plugins/axios";
+import { api } from "../../plugins/axios";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import React from "react";
 export type apiBookPostReq = {
