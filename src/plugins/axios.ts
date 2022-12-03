@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
 export const api = axios.create({
-  baseURL: "https://api-for-missions-and-railways.herokuapp.com/",
+  baseURL: "https://ifrbzeaz2b.execute-api.ap-northeast-1.amazonaws.com/",
 });
 
 api.interceptors.request.use((req: AxiosRequestConfig) => {
