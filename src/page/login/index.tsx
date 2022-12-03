@@ -17,7 +17,7 @@ import axios from "axios"
 import LoginLayout from "../../layouts/login"
 const Login = () => {
     const navigate = useNavigate();
-    const { loginUser, loginUserLoading, getUser } = useUserApi();
+    const { loginUser, loginUserLoading } = useUserApi();
     const [email, setEmail] = React.useState<string>("");
     const [emailError, setEmailError] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
@@ -33,9 +33,9 @@ const Login = () => {
             navigate("/books")
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                alert(`${e?.response?.status}：${e?.response?.statusText}`);
+                console.error(`${e?.response?.status}：${e?.response?.statusText}`);
             } else {
-                alert("予期せぬエラー");
+                console.error("予期せぬエラー");
             }
         }
     };
@@ -62,7 +62,7 @@ const Login = () => {
                         <Box sx={{ mb: "15px" }}>
                             <TextField
                                 data-cy="email"
-                                data-testid="email"
+                                inputProps={{ "data-testid": "email" }}
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!emailError}
                                 helperText={emailError}
@@ -74,7 +74,7 @@ const Login = () => {
                         <Box sx={{ mb: "15px" }}>
                             <TextField
                                 data-cy="password"
-                                data-testid="password"
+                                inputProps={{ "data-testid": "password" }}
                                 onKeyPress={e => { if (e.key === "Enter") { submit() } }}
                                 error={!!passwordError}
                                 helperText={passwordError}

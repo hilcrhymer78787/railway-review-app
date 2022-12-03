@@ -20,9 +20,9 @@ function LoginLayout({ children }: Props) {
         navigate("/books")
       } catch (e) {
         if (axios.isAxiosError(e)) {
-          alert(`${e?.response?.status}：${e?.response?.statusText}`);
+          console.error(`${e?.response?.status}：${e?.response?.statusText}`);
         } else {
-          alert("予期せぬエラー");
+          console.error("予期せぬエラー");
         }
       }
     };
