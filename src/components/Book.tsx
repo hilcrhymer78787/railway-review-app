@@ -77,7 +77,7 @@ const BookForm = ({ book }: Props) => {
             setReviewError("レビューを入力してください");
             isError = true;
         }
-        if (!review) {
+        if (!url) {
             setUrlError("URLを入力してください");
             isError = true;
         }
