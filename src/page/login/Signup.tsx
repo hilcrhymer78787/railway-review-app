@@ -75,6 +75,7 @@ const Signup = () => {
                                 value={name}
                                 onChange={(e) => { setName(e.currentTarget.value); }}
                                 label="name" variant="outlined" color="primary"
+                                inputProps={{ "data-testid": "name" }}
                             />
                         </Box>
                         <Box sx={{ mb: "15px" }}>
@@ -85,6 +86,7 @@ const Signup = () => {
                                 value={email}
                                 onChange={(e) => { setEmail(e.currentTarget.value); }}
                                 label="email" variant="outlined" color="primary"
+                                inputProps={{ "data-testid": "email" }}
                             />
                         </Box>
                         <Box sx={{ mb: "15px" }}>
@@ -95,6 +97,7 @@ const Signup = () => {
                                 value={password}
                                 onChange={(e) => { setPassword(e.currentTarget.value); }}
                                 label="password" variant="outlined" color="primary"
+                                inputProps={{ "data-testid": "password" }}
                             />
                         </Box>
                     </CardContent>
@@ -110,6 +113,7 @@ const Signup = () => {
                             variant="contained"
                             onClick={() => { submit() }}
                             loading={createUserLoading}
+                            data-testid="submit"
                         >
                             登録<SendIcon />
                         </LoadingButton>

@@ -1,19 +1,39 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from 'react-router-dom'
 import userEvent from "@testing-library/user-event";
-import Login from "./index"
+import Signup from "./Signup"
 
-describe('Login component test', () => {
+describe('Signup component test', () => {
 
-  test("render login", () => {
-    render(<Login />, { wrapper: BrowserRouter });
+  test("render Signup", () => {
+    render(<Signup />, { wrapper: BrowserRouter });
+    expect(screen.queryByTestId('name')).toBeTruthy()
     expect(screen.queryByTestId('email')).toBeTruthy()
     expect(screen.queryByTestId('password')).toBeTruthy()
     expect(screen.queryByTestId('submit')).toBeTruthy()
   })
 
+  test("name test", () => {
+    render(<Signup />, { wrapper: BrowserRouter });
+
+    const name = screen.queryByTestId('name')
+    const submit = screen.queryByTestId('submit')
+
+    if (!name) throw "nameがありません";
+    if (!submit) throw "submitがありません";
+
+    // 名前・エラー
+    userEvent.click(submit);
+    expect(screen.queryByText("名前を入力してください")).toBeTruthy();
+
+    // 名前・成功
+    userEvent.type(name, "テスト");
+    userEvent.click(submit);
+    expect(screen.queryByText('名前を入力してください')).toBeNull();
+  })
+
   test("email test", () => {
-    render(<Login />, { wrapper: BrowserRouter });
+    render(<Signup />, { wrapper: BrowserRouter });
 
     const email = screen.queryByTestId('email')
     const submit = screen.queryByTestId('submit')
@@ -33,7 +53,7 @@ describe('Login component test', () => {
   })
 
   test("password error", () => {
-    render(<Login />, { wrapper: BrowserRouter });
+    render(<Signup />, { wrapper: BrowserRouter });
 
     const password = screen.queryByTestId('password')
     const submit = screen.queryByTestId('submit')
@@ -53,20 +73,24 @@ describe('Login component test', () => {
   })
 
   test("submit success", () => {
-    render(<Login />, { wrapper: BrowserRouter });
+    render(<Signup />, { wrapper: BrowserRouter });
 
+    const name = screen.queryByTestId('name')
     const email = screen.queryByTestId('email')
     const password = screen.queryByTestId('password')
     const submit = screen.queryByTestId('submit')
 
+    if (!name) throw "nameがありません";
     if (!email) throw "emailがありません";
     if (!password) throw "passwordがありません";
     if (!submit) throw "submitがありません";
 
+    userEvent.type(name, "テスト");
     userEvent.type(email, "test@gmail.com");
     userEvent.type(password, "test1234");
     userEvent.click(submit);
 
+    expect(screen.queryByText('名前を入力してください')).toBeNull();
     expect(screen.queryByText('パスワードは8桁以上で設定してください')).toBeNull();
     expect(screen.queryByText('正しい形式で入力してください')).toBeNull();
   })
