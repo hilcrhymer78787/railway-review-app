@@ -48,7 +48,10 @@ export const useReadBooks = () => {
     }
   };
   React.useEffect(() => {
-    fetchBooks(0);
+    const mountedFunc = async () => {
+      await fetchBooks(0);
+    };
+    mountedFunc();
   }, []);
   return {
     books,
