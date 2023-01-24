@@ -11,13 +11,6 @@ export type Book = {
   reviewer: string,
   isMine: true
 }
-const getBook = async (bookId: string) => {
-  const requestConfig: AxiosRequestConfig = {
-    url: `/books/${bookId}`,
-    method: "GET",
-  };
-  return api(requestConfig)
-};
 export const useReadBook = () => {
   const params = useParams();
   const [book, setBook] = React.useState<Book | null>(null);
@@ -25,21 +18,21 @@ export const useReadBook = () => {
   const [errorText, setErrorText] = React.useState('');
   const fetchBook = async () => {
     setIsLoading(true);
-    try {
-      const res = await getBook(params.book_id ?? '');
-      setBook(res.data);
-      setErrorText('');
-    } catch (e) {
-      if (e instanceof Error) {
-        setErrorText(e.message)
-        throw new Error(e.message)
-      } else {
-        setErrorText('予期せぬエラー')
-        throw new Error('予期せぬエラー')
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setErrorText('');
+    await api.get(`/books/${params.book_id}`)
+      .then((res) => {
+        setBook(res.data);
+      })
+      .catch((e) => {
+        if (e instanceof Error) {
+          setErrorText(e.message)
+        } else {
+          setErrorText('予期せぬエラー')
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
   React.useEffect(() => {
     fetchBook();
