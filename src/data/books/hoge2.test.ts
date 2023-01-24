@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import axiosMock from "axios";
+import axios from "axios";
 
 import { renderHook, act } from '@testing-library/react-hooks';
 import useHeroes from './hoge2'
@@ -11,7 +11,7 @@ jest.mock("axios");
 
 it("fetches and displays data", async () => {
   // 初期レンダリング
-  axiosMock.get.mockResolvedValueOnce({ data: { greeting: "hello there" } });
+  (axios as any).get.mockResolvedValueOnce({ data: { greeting: "hello there" } });
   const { result, waitForNextUpdate } = renderHook(() =>
     useHeroes(),
   );
@@ -19,11 +19,11 @@ it("fetches and displays data", async () => {
   await waitForNextUpdate();
   expect(result.current.isLoading).toBe(false); //ローディング終了
   expect(result.current.errorText).toBe(""); //エラーなし
-  expect(result.current.data.greeting).toBe("hello there"); //テキストの表示
+  expect(result.current.data?.greeting).toBe("hello there"); //テキストの表示
 
   // エラーテスト
   await act(async () => {
-    axiosMock.get.mockRejectedValue(new Error('Async error message'));
+    (axios as any).get.mockRejectedValue(new Error('Async error message'));
     await result.current.fetch()
   });
   expect(result.current.isLoading).toBe(false); //ローディング終了
@@ -31,7 +31,7 @@ it("fetches and displays data", async () => {
 
   // 予期せぬエラー
   await act(async () => {
-    axiosMock.get.mockRejectedValue();
+    (axios as any).get.mockRejectedValue();
     await result.current.fetch()
   });
   expect(result.current.isLoading).toBe(false); //ローディング終了
