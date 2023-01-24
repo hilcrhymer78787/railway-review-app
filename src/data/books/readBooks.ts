@@ -1,5 +1,5 @@
 import { api } from "../../plugins/axios";
-import { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import React from "react";
 export type apiBookGetReq = {
   offset: number
@@ -14,38 +14,36 @@ export type Book = {
   reviewer: string,
   isMine: true
 }
-const getBooks = async (offset: number) => {
-  const apiParam: apiBookGetReq = {
-    offset: offset,
-  };
-  const requestConfig: AxiosRequestConfig = {
-    url: "/books",
-    method: "GET",
-    params: apiParam,
-  };
-  return api(requestConfig)
-};
 export const useReadBooks = () => {
   const [books, setBooks] = React.useState<apiBookGetRes>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorText, setErrorText] = React.useState('');
   const fetchBooks = async (offset: number) => {
+    const apiParam: apiBookGetReq = {
+      offset: offset,
+    };
+    const requestConfig: AxiosRequestConfig = {
+      url: "/books",
+      method: "GET",
+      params: apiParam,
+    };
     setIsLoading(true);
-    try {
-      const res = await getBooks(offset);
-      setBooks(res.data);
-      setErrorText('');
-    } catch (e) {
-      if (e instanceof Error) {
-        setErrorText(e.message)
-        throw new Error(e.message)
-      } else {
-        setErrorText('予期せぬエラー')
-        throw new Error('予期せぬエラー')
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setErrorText('');
+    await axios(requestConfig)
+      .then((res) => {
+        setBooks(res.data);
+        setErrorText('');
+      })
+      .catch((e) => {
+        if (e instanceof Error) {
+          setErrorText(e.message)
+        } else {
+          setErrorText('予期せぬエラー')
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
   React.useEffect(() => {
     const mountedFunc = async () => {

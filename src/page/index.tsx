@@ -4,7 +4,7 @@ const Index = () => {
   const navigate = useNavigate();
   React.useEffect(() => {
     navigate("/books");
-  }, []);
+  }, [navigate]);
   return (
     <></>
   );
