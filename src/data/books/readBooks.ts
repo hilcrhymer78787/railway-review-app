@@ -1,5 +1,4 @@
 import { api } from "../../plugins/axios";
-import axios, { AxiosRequestConfig } from "axios";
 import React from "react";
 export type apiBookGetReq = {
   offset: number
@@ -22,15 +21,9 @@ export const useReadBooks = () => {
     const apiParam: apiBookGetReq = {
       offset: offset,
     };
-    const requestConfig: AxiosRequestConfig = {
-      url: "/books",
-      method: "GET",
-      params: apiParam,
-    };
     setIsLoading(true);
     setErrorText('');
-    
-    await axios(requestConfig)
+    await api.get(`/books`, { params: apiParam })
       .then((res) => {
         setBooks(res.data);
         setErrorText('');
