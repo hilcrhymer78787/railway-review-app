@@ -38,7 +38,7 @@ const json = {
 // jest.mock('axios', () => {
 //   return {
 //     create: jest.fn(() => ({
-//       get: jest.fn(),
+//       get: jest.fn().mockResolvedValue(json),
 //       interceptors: {
 //         request: { use: jest.fn(), eject: jest.fn() },
 //         response: { use: jest.fn(), eject: jest.fn() }
@@ -51,7 +51,7 @@ jest.mock("axios");
 
 it("fetches and displays data", async () => {
   // 初期レンダリング
-  (axios as any).mockResolvedValueOnce(json);
+  (axios as any).mockResolvedValue(json);
 
   const { result, waitForNextUpdate } = renderHook(() =>
     useReadBooks(),

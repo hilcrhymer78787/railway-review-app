@@ -29,6 +29,7 @@ export const useReadBooks = () => {
     };
     setIsLoading(true);
     setErrorText('');
+    
     await axios(requestConfig)
       .then((res) => {
         setBooks(res.data);
