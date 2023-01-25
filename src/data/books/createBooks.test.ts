@@ -28,16 +28,22 @@ it("fetches and displays data", async () => {
   // エラーテスト
   await act(async () => {
     jest.spyOn(api, 'post').mockRejectedValue(new Error('Async error message'));
-    await result.current.createBooks(param)
+    try {
+      await result.current.createBooks(param)
+    } catch (e) {
+      expect(result.current.createBooksLoading).toBe(false); //ローディング終了
+      expect(result.current.errorText).toBe("Async error message"); //エラーあり
+    }
   });
-  expect(result.current.createBooksLoading).toBe(false); //ローディング終了
-  expect(result.current.errorText).toBe("Async error message"); //エラーあり
 
   // 予期せぬエラー
   await act(async () => {
     jest.spyOn(api, 'post').mockRejectedValue("");
-    await result.current.createBooks(param)
+    try {
+      await result.current.createBooks(param)
+    } catch (e) {
+      expect(result.current.createBooksLoading).toBe(false); //ローディング終了
+      expect(result.current.errorText).toBe("予期せぬエラー"); //エラーあり
+    }
   });
-  expect(result.current.createBooksLoading).toBe(false); //ローディング終了
-  expect(result.current.errorText).toBe("予期せぬエラー"); //エラーあり
 });

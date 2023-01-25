@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios"
 import { useCreateBooks } from "../data/books/createBooks";
 import { useEditBook } from "../data/books/editBook";
 import { Book } from '../data/books/readBook'
@@ -22,7 +21,7 @@ type Props = {
 const BookForm = ({ book }: Props) => {
     const navigate = useNavigate();
     const { editBookLoading, editBook } = useEditBook();
-    const { createBooksLoading, createBooks } = useCreateBooks();
+    const { createBooksLoading, errorText, createBooks } = useCreateBooks();
     const [editable, setEditable] = React.useState<boolean>(!book);
     const [title, setTitle] = React.useState<string>(book ? book.title : "");
     const [titleError, setTitleError] = React.useState<string>("");
@@ -51,13 +50,7 @@ const BookForm = ({ book }: Props) => {
                 });
             }
             navigate("/books")
-        } catch (e) {
-            if (axios.isAxiosError(e)) {
-                console.error(`${e?.response?.status}：${e?.response?.statusText}`);
-            } else {
-                console.error("予期せぬエラー");
-            }
-        }
+        } catch (e) { }
     };
     const validation = (): boolean => {
         let isError = false;
@@ -168,6 +161,7 @@ const BookForm = ({ book }: Props) => {
                         </Box>
                     </>
                 }
+                {errorText}
             </CardContent>
             <CardActions>
                 <Box></Box>

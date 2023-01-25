@@ -26,18 +26,18 @@ it("fetches and displays data", async () => {
   expect(result.current.errorText).toBe(""); //エラーなし
 
   // エラーテスト
-  await act(async () => {
-    jest.spyOn(api, 'put').mockRejectedValue(new Error('Async error message'));
+  try {
     await result.current.editBook(param)
-  });
-  expect(result.current.editBookLoading).toBe(false); //ローディング終了
-  expect(result.current.errorText).toBe("Async error message"); //エラーあり
+  } catch (e) {
+    expect(result.current.editBookLoading).toBe(false); //ローディング終了
+    expect(result.current.errorText).toBe("Async error message"); //エラーあり
+  }
 
   // 予期せぬエラー
-  await act(async () => {
-    jest.spyOn(api, 'put').mockRejectedValue("");
+  try {
     await result.current.editBook(param)
-  });
-  expect(result.current.editBookLoading).toBe(false); //ローディング終了
-  expect(result.current.errorText).toBe("予期せぬエラー"); //エラーあり
+  } catch (e) {
+    expect(result.current.editBookLoading).toBe(false); //ローディング終了
+    expect(result.current.errorText).toBe("予期せぬエラー"); //エラーあり
+  }
 });

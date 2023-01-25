@@ -1,5 +1,4 @@
 import { api } from "../../plugins/axios";
-import { AxiosRequestConfig } from "axios";
 import { useParams } from "react-router-dom";
 import React from "react";
 export type Book = {
@@ -24,11 +23,9 @@ export const useReadBook = () => {
         setBook(res.data);
       })
       .catch((e) => {
-        if (e instanceof Error) {
-          setErrorText(e.message)
-        } else {
-          setErrorText('予期せぬエラー')
-        }
+        const errorMessage = e.message ?? '予期せぬエラー'
+        setErrorText(errorMessage)
+        throw new Error(errorMessage);
       })
       .finally(() => {
         setIsLoading(false);

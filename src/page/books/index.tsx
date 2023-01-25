@@ -15,12 +15,12 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Layout from "../../layouts/default"
 import { useReadBooks } from "../../data/books/readBooks";
+import { apiBookGetRes } from "../../data/books/readBooks"
 const Books = () => {
-    const navigate = useNavigate();
-    const { books, fetchBooks } = useReadBooks();
-    const [page, setPage] = React.useState<number>(1);
+    const { books, errorText, isLoading, fetchBooks } = useReadBooks();
+    const [page, setPage] = React.useState(1);
     const onClickPagination = (e: React.ChangeEvent<unknown>, page: number) => {
-        window.scroll({top: 0, behavior: 'smooth'});
+        window.scroll({ top: 0, behavior: 'smooth' });
         setPage(page)
         fetchBooks((page - 1) * 10)
     }
@@ -29,20 +29,7 @@ const Books = () => {
             <Card>
                 <CardHeader title="レビュー一覧" />
                 <CardContent sx={{ p: 0 }}>
-                    <List sx={{ width: '100%', p: 0 }}>
-                        {books.map((book) => (
-                            <ListItem key={book.id} sx={{ cursor: 'pointer' }} onClick={() => {
-                                navigate(`/books/${book.id}`)
-                            }}>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <ContentPasteIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={book.title} secondary={`id:${book.id}`} />
-                            </ListItem>
-                        ))}
-                    </List>
+                    <BooksContent books={books} isLoading={isLoading} errorText={errorText} />
                 </CardContent>
             </Card>
             <Box sx={{ display: 'flex', justifyContent: 'center', pt: 3 }}>
@@ -50,5 +37,31 @@ const Books = () => {
             </Box>
         </Layout>
     );
+}
+const BooksContent = (props: {
+    books: apiBookGetRes
+    isLoading: boolean
+    errorText: string
+}) => {
+    const navigate = useNavigate();
+    if (props.isLoading) return <p>ローディング中...</p>
+    if (props.errorText) return <p>{props.errorText}</p>
+    if (!props.books.length) return <p>データがありません</p>
+    return (
+        <List sx={{ width: '100%', p: 0 }}>
+            {props.books.map((book) => (
+                <ListItem key={book.id} sx={{ cursor: 'pointer' }} onClick={() => {
+                    navigate(`/books/${book.id}`)
+                }}>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <ContentPasteIcon />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={book.title} secondary={`id:${book.id}`} />
+                </ListItem>
+            ))}
+        </List>
+    )
 }
 export default Books;
