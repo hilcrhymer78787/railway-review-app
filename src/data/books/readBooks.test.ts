@@ -34,18 +34,20 @@ const mockData = {
 }
 it("fetches and displays data", async () => {
   // 初期レンダリング
-  jest.spyOn(api, 'get').mockResolvedValue(mockData)
-  const { result, waitForNextUpdate } = renderHook(() =>
+  const { result } = renderHook(() =>
     useReadBooks(),
   );
-
-  expect(result.current.isLoading).toBe(true); //ローディング中
-  await waitForNextUpdate();
-
-  expect(result.current.isLoading).toBe(false); //ローディング終了
-  expect(result.current.errorText).toBe(""); //エラーなし
-  expect(result.current.books[0].title).toBe("テスト投稿"); //テキストの表示
-
+  // エラーテスト
+  await act(async () => {
+    jest.spyOn(api, 'get').mockResolvedValue(mockData)
+    try {
+      await result.current.fetchBooks(0)
+    } catch (e) { }
+    console.log(result.current.books);
+    expect(result.current.isLoading).toBe(false); //ローディング終了
+    expect(result.current.errorText).toBe(""); //エラーなし
+    expect(result.current.books[0].title).toBe("テスト投稿"); //テキストの表示
+  });
   // エラーテスト
   await act(async () => {
     jest.spyOn(api, 'get').mockRejectedValue(new Error('Async error message'));

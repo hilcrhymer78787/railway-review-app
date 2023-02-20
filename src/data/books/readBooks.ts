@@ -37,12 +37,6 @@ export const useReadBooks = () => {
         setIsLoading(false);
       })
   };
-  React.useEffect(() => {
-    const mountedFunc = async () => {
-      await fetchBooks(0);
-    };
-    mountedFunc();
-  }, []);
   return {
     books,
     isLoading,
